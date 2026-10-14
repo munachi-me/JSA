@@ -1,0 +1,80 @@
+{
+  "generator": "jsa-analytics",
+  "version": "0.1.0",
+  "name": "Sales Analytics",
+  "dashboard": {
+    "title": "Sales Analytics",
+    "template": "executive",
+    "theme": "dark"
+  },
+  "rowCount": 5,
+  "columns": [
+    "OrderID",
+    "Region",
+    "Revenue",
+    "Profit",
+    "OrderValue"
+  ],
+  "metrics": [
+    {
+      "label": "Total Revenue",
+      "value": 5220,
+      "format": "currency"
+    },
+    {
+      "label": "Total Profit",
+      "value": 1125,
+      "format": "currency"
+    },
+    {
+      "label": "Average Order Value",
+      "value": 1044,
+      "format": "currency"
+    }
+  ],
+  "charts": [
+    {
+      "title": "Revenue by Region",
+      "type": "bar",
+      "x": "Region",
+      "y": "Revenue"
+    }
+  ],
+  "data": [
+    {
+      "OrderID": 1001,
+      "Region": "North",
+      "Revenue": 1200,
+      "Profit": 280,
+      "OrderValue": 1200
+    },
+    {
+      "OrderID": 1002,
+      "Region": "South",
+      "Revenue": 850,
+      "Profit": 140,
+      "OrderValue": 850
+    },
+    {
+      "OrderID": 1003,
+      "Region": "North",
+      "Revenue": 460,
+      "Profit": 90,
+      "OrderValue": 460
+    },
+    {
+      "OrderID": 1004,
+      "Region": "West",
+      "Revenue": 1720,
+      "Profit": 410,
+      "OrderValue": 1720
+    },
+    {
+      "OrderID": 1005,
+      "Region": "South",
+      "Revenue": 990,
+      "Profit": 205,
+      "OrderValue": 990
+    }
+  ]
+}

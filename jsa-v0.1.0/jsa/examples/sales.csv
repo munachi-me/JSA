@@ -1,0 +1,6 @@
+OrderID,Region,Revenue,Profit,OrderValue
+1001,North,1200,280,1200
+1002,South,850,140,850
+1003,North,460,90,460
+1004,West,1720,410,1720
+1005,South,990,205,990

@@ -1,0 +1,17 @@
+{
+  "name": "jsa-analytics",
+  "version": "0.1.0",
+  "description": "A JavaScript analytics toolkit for data, KPIs, and dashboard generation.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "main": "./src/index.js",
+  "exports": { ".": "./src/index.js" },
+  "bin": { "jsa": "./src/cli.js" },
+  "scripts": {
+    "start": "node examples/quick-start.js",
+    "test": "node --test",
+    "check": "node --check src/index.js && node --check src/jsa.js && node --check src/data-table.js && node --check src/cli.js"
+  },
+  "dependencies": { "papaparse": "^5.5.3" }
+}
