@@ -89,6 +89,10 @@ node src/cli.js inspect examples/sales.csv
 - The project README describes a roadmap that includes richer analytics, a real React app, interactive charts, filters, templates, and deployment workflows.
 - The README claims a CLI and manifest output; those are consistent with the project files that exist in this release.
 
+## Build & test verification
+
+The project owner reports that for v0.1.0 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 ## License
 
 MIT. See `LICENSE`.

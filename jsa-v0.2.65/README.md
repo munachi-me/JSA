@@ -48,7 +48,12 @@ Usage (quickstart)
 Notes & verification
 
 - The README documents the Phase 6 stabilization roadmap and includes a verification note: a fresh build/test run had not been completed in the Phase 6 audit environment. The code and package.json contain scripts for dev/build/test but do not guarantee passing tests in your environment.
-- This README references specific files (src/pages/DashboardPage.jsx, core/dashboard/*, storage/idb.js) so you can inspect the implementation directly.
+
+## Build & test verification
+
+The project owner reports that for v0.2.65 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
+- For clarity: the verification note above refers to an external audit environment and is distinct from the project-owner verification recorded here.
 
 License
 

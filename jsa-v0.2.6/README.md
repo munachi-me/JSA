@@ -38,6 +38,10 @@ Notes
 
 - This patch follows the same feature set described in Phase 1–5 documentation. For exact behavior, inspect the source files in core/ and src/.
 
+## Build & test verification
+
+The project owner reports that for v0.2.6 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 License
 
 MIT. See LICENSE.

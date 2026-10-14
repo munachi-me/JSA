@@ -38,6 +38,10 @@ Notes
 
 - Confirm feature-level details by inspecting the code in core/visualization, core/transforms, and src/pages.
 
+## Build & test verification
+
+The project owner reports that for v0.2.53 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 License
 
 MIT. See LICENSE.

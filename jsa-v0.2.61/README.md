@@ -38,6 +38,10 @@ Notes
 
 - The package.json for this release includes fake-indexeddb as a dev dependency to support test environments.
 
+## Build & test verification
+
+The project owner reports that for v0.2.61 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 License
 
 MIT. See LICENSE.

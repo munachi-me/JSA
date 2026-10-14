@@ -50,10 +50,13 @@ Usage
 2. Open the local Vite URL shown in the terminal (usually http://localhost:5173)
 3. Use the UI to import a CSV/JSON file, inspect columns, clean data, and explore analyses
 
+## Build & test verification
+
+The project owner reports that for v0.2.3 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 Notes
 
 - This README summarizes the release-state documented in the repository; confirm implementation details by inspecting the core/ and src/ folders for specific modules.
-- The project is browser-first and stores datasets in memory until an explicit persistence layer is implemented in later phases.
 
 License
 

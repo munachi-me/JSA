@@ -39,6 +39,10 @@ Notes
 - The tests and smoke tests can differ across patch releases. Use the package.json in this directory for exact commands.
 - The repo documents a stabilization/Phase 6 roadmap which is outside the scope of this patch.
 
+## Build & test verification
+
+The project owner reports that for v0.2.51 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 License
 
 MIT. See LICENSE.

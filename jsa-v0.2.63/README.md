@@ -38,6 +38,10 @@ Notes
 
 - As with other patch releases, inspect core/ to confirm the exact behavior of analytics, insights, or exports.
 
+## Build & test verification
+
+The project owner reports that for v0.2.63 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 License
 
 MIT. See LICENSE.

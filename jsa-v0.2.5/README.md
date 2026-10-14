@@ -42,6 +42,10 @@ Notes
 
 - This README follows the existing in-repo documentation; if you need to confirm a specific feature, inspect the corresponding source file under core/ or src/.
 
+## Build & test verification
+
+The project owner reports that for v0.2.5 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 License
 
 MIT. See LICENSE.

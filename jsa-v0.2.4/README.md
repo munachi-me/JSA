@@ -47,6 +47,10 @@ Notes
 
 - This README preserves the repository's phase-based documentation. When using this release, inspect core/visualization, core/transforms, and storage/idb.js (if present) to confirm features.
 
+## Build & test verification
+
+The project owner reports that for v0.2.4 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 License
 
 MIT. See LICENSE.

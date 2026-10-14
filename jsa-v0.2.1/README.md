@@ -50,6 +50,10 @@ npm run dev
 
 Use the app to import data, clean it, run filters, and review the saved analysis and KPI engine workflows.
 
+## Build & test verification
+
+The project owner reports that for v0.2.1 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 ## Notes
 
 - This release is still a Phase 1–2 implementation and should not be treated as production-ready.

@@ -44,6 +44,10 @@ npm run dev
 
 Then import a dataset, clean it, create or review analyses, and use the charting features available in the UI.
 
+## Build & test verification
+
+The project owner reports that for v0.2.2 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 ## Notes
 
 - The README for this version still describes the app as in-memory and early-stage.

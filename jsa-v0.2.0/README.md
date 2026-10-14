@@ -60,6 +60,10 @@ npm run dev
 
 Then open the local Vite app in a browser and use the UI to import CSV or JSON data, inspect dataset columns, and review descriptive statistics.
 
+## Build & test verification
+
+The project owner reports that for v0.2.0 the code was built and the test suite was executed locally and passed successfully. This statement is provided by the project owner and recorded here for documentation purposes. It does not imply that any CI pipeline was executed.
+
 ## Development notes
 
 - This version is still described as in-memory only.
