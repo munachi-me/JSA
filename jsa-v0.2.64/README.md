@@ -2,7 +2,7 @@
 Setup: `npm install` · `npm run dev` · `npm test` · `npm run build`
 
 ## Platform status
-Phases 1–5 have implementations for data import, preparation, analysis, visualization, dashboards, browser persistence, and rule-based insights. These features still need a full build/test and end-to-end verification as Phase 6 begins. The current app is a browser-based platform; hosted publishing and standalone dashboard generation are not implemented yet.
+Phases 1–5 have implementations for data import, preparation, analysis, visualization, dashboards, browser persistence, and rule-based insights. A Phase 6 Initial Stabilization Audit (2026-10-13) has reviewed the source tree; full end-to-end verification is pending as project dependencies were unavailable in the audit environment. The current app is a browser-based platform; hosted publishing and standalone dashboard generation are not implemented yet.
 
 ## Phase 1 foundation
 CSV (delimiter detection, quotes, malformed-row reporting) and JSON import; typed columnar dataset model with stable column ids; type inference with user override; descriptive statistics; group-by aggregation; data-quality profile; dataset workspace with paginated preview.
