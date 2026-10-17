@@ -1,0 +1,122 @@
+import { useEffect, useMemo, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useDatasets } from '../app/DatasetContext.jsx';
+import DatasetPicker from '../components/data/DatasetPicker.jsx';
+import { useDialogs } from '../app/DialogProvider.jsx';
+import { TYPES, isNumericType } from '../core/data/dataTypes.js';
+import { describe, describeCategorical } from '../core/analytics/descriptive.js';
+import { profileDataset } from '../core/data/profile.js';
+import { ArrowRight, Columns3, Database, Search, Rows3, AlertTriangle, Copy, Table2, SlidersHorizontal, Trash2, PencilLine, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+
+const PAGE = 25;
+const fmt = (n) => (n === null || n === undefined ? '—' : Number.isInteger(n) ? n.toLocaleString() : n.toLocaleString(undefined, { maximumFractionDigits: 3 }));
+
+export default function DatasetPage() {
+  const { id } = useParams();
+  const { datasets, overrideType, remove, addStep } = useDatasets();
+  const dialogs = useDialogs();
+  const ds = id ? datasets.find((d) => d.id === id) : datasets[0];
+  const [page, setPage] = useState(0);
+  const [columnQuery, setColumnQuery] = useState('');
+  const profile = useMemo(() => (ds ? profileDataset(ds) : null), [ds]);
+
+  // Switching datasets must always start at the first page; otherwise a high page
+  // number from a larger dataset can make a smaller dataset look empty.
+  useEffect(() => { setPage(0); }, [ds?.id]);
+  useEffect(() => {
+    const maxPage = Math.max(0, Math.ceil((ds?.rowCount ?? 0) / PAGE) - 1);
+    setPage((current) => Math.min(current, maxPage));
+  }, [ds?.rowCount]);
+
+  if (!ds) return <div className="page"><h1>No dataset open</h1><p className="muted">Go to <Link to="/">Home</Link> to import one.</p></div>;
+
+  const pages = Math.max(1, Math.ceil(ds.rowCount / PAGE));
+  const start = page * PAGE;
+  const end = Math.min(start + PAGE, ds.rowCount);
+  const visibleColumns = ds.columns.filter((c) => c.name.toLocaleLowerCase().includes(columnQuery.trim().toLocaleLowerCase()));
+  const missingPercent = ds.rowCount && ds.columns.length ? Math.min(100, (profile.totalMissing / (ds.rowCount * ds.columns.length)) * 100) : 0;
+
+  return (
+    <div className="page wide dataset-page">
+      <div className="dataset-page-heading">
+        <div className="dataset-heading-copy">
+          <div className="dataset-eyebrow"><Database size={14} /> DATA WORKSPACE <span> / </span> DATASET EXPLORER</div>
+          <h1>{ds.name}</h1>
+          <p>Explore your data, review column quality, and inspect records before analysis.</p>
+        </div>
+        <div className="dataset-heading-actions">
+          <DatasetPicker ds={ds} base="dataset" />
+          <Link className="btn dataset-primary-action" to={`/clean/${ds.id}`}><SlidersHorizontal size={15} /> Clean data <ArrowRight size={15} /></Link>
+        </div>
+      </div>
+
+      <div className="dataset-summary-grid" aria-label="Dataset summary">
+        <div className="dataset-summary-card"><span className="dataset-summary-icon violet"><Rows3 size={18} /></span><div><span>Total rows</span><strong>{ds.rowCount.toLocaleString()}</strong><small>{ds.pipeline.steps.length ? 'After cleaning' : 'Records loaded'}</small></div></div>
+        <div className="dataset-summary-card"><span className="dataset-summary-icon blue"><Columns3 size={18} /></span><div><span>Columns</span><strong>{ds.columns.length.toLocaleString()}</strong><small>Fields available</small></div></div>
+        <div className="dataset-summary-card"><span className="dataset-summary-icon amber"><AlertTriangle size={18} /></span><div><span>Missing cells</span><strong>{profile.totalMissing.toLocaleString()}</strong><small>{missingPercent.toFixed(1)}% of all cells</small></div></div>
+        <div className="dataset-summary-card"><span className="dataset-summary-icon green"><Copy size={18} /></span><div><span>Duplicate rows</span><strong>{profile.duplicateRows.toLocaleString()}</strong><small>{profile.duplicateRows ? 'Worth reviewing' : 'No duplicates found'}</small></div></div>
+      </div>
+
+      {ds.pipeline.steps.length > 0 && <div className="dataset-cleaning-note"><Sparkles size={16} /><span><strong>Cleaned view</strong> This dataset includes {ds.pipeline.steps.length} cleaning step(s). The original source contained {ds.sourceRowCount.toLocaleString()} rows.</span><Link to={`/clean/${ds.id}`}>Review steps <ArrowRight size={14} /></Link></div>}
+      {ds.warnings.length > 0 && <div role="status" className="alert warn"><strong>Import warnings</strong><ul>{ds.warnings.slice(0, 5).map((w, i) => <li key={i}>{w.message}</li>)}</ul>{ds.warnings.length > 5 && <span>…and {ds.warnings.length - 5} more.</span>}</div>}
+      {profile.issues.length > 0 && <div role="status" className="alert warn"><strong>Data quality</strong><ul>{profile.issues.map((m, i) => <li key={i}>{m}</li>)}</ul></div>}
+
+      <section className="dataset-section">
+        <div className="dataset-section-heading">
+          <div><span className="dataset-section-kicker">SCHEMA OVERVIEW</span><h2>Columns</h2><p>Understand each field's type and statistical profile.</p></div>
+          <label className="dataset-search"><Search size={16} /><input aria-label="Search columns" placeholder="Search columns…" value={columnQuery} onChange={(e) => setColumnQuery(e.target.value)} /><span>{visibleColumns.length}</span></label>
+        </div>
+        <div className="scroll dataset-table-scroll"><table className="dataset-columns-table">
+          <thead><tr><th>Column</th><th>Data type</th><th>Missing</th><th>Distinct</th><th>Mean</th><th>Median</th><th>Min</th><th>Max</th><th>Std dev</th><th>Actions</th></tr></thead>
+          <tbody>{visibleColumns.map((c) => {
+            const vals = ds.data[c.id];
+            const num = isNumericType(c.type);
+            const s = num ? describe(vals) : null;
+            const cat = !num ? describeCategorical(vals) : null;
+            return (
+              <tr key={c.id}>
+                <td><span className="dataset-column-name">{c.name}</span><small className="dataset-column-id">{c.id}</small></td>
+                <td><select aria-label={`Type for ${c.name}`} value={c.type} title={c.typeReason}
+                  onChange={(e) => overrideType(ds.id, c.id, e.target.value)}>{TYPES.map((t) => <option key={t}>{t}</option>)}</select></td>
+                <td className="num">{(num ? s.missing : cat.missing).toLocaleString()}</td>
+                <td className="num">{(num ? s.distinct : cat.distinct).toLocaleString()}</td>
+                {num ? <><td className="num">{fmt(s.mean)}</td><td className="num">{fmt(s.median)}</td><td className="num">{fmt(s.min)}</td><td className="num">{fmt(s.max)}</td><td className="num">{fmt(s.stdDev)}</td></>
+                  : <td colSpan={5} className="dataset-top-values"><span>Top values</span> {cat.top.map((t) => `${t.value} (${t.count})`).join(', ') || '—'}</td>}
+                <td><div className="column-actions">
+                  <button type="button" className="btn small-btn" aria-label={`Rename ${c.name}`} onClick={async () => {
+                    const next = await dialogs.prompt(`Rename column “${c.name}” to:`, c.name, { title: 'Rename column', confirmText: 'Save name' });
+                    if (next === null) return;
+                    const name = next.trim();
+                    if (!name) { await dialogs.alert('Column name cannot be empty.', { title: 'Invalid column name', tone: 'error' }); return; }
+                    if (ds.columns.some((other) => other.id !== c.id && other.name.trim().toLocaleLowerCase() === name.toLocaleLowerCase())) { await dialogs.alert(`A column named “${name}” already exists.`, { title: 'Duplicate column name', tone: 'error' }); return; }
+                    if (name !== c.name) addStep(ds.id, 'renameColumn', { column: c.id, name });
+                  }}><PencilLine size={13} /> Rename</button>
+                  <button type="button" className="btn small-btn danger" aria-label={`Delete ${c.name}`} disabled={ds.columns.length <= 1} onClick={async () => {
+                    if (await dialogs.confirm(`Delete column “${c.name}”? This adds a reversible cleaning step; you can remove that step from Clean data.`, { title: 'Delete column', confirmText: 'Delete column' })) addStep(ds.id, 'deleteColumn', { column: c.id });
+                  }}><Trash2 size={13} /> Delete</button>
+                </div></td>
+              </tr>);
+          })}</tbody>
+        </table>{visibleColumns.length === 0 && <div className="dataset-no-results">No columns match “{columnQuery}”. Try another search.</div>}</div>
+        <p className="dataset-table-footnote">Standard deviation uses the sample formula (n−1). Hover a data type to see why it was inferred.</p>
+      </section>
+
+      <section className="dataset-section dataset-preview-section">
+        <div className="dataset-section-heading">
+          <div><span className="dataset-section-kicker">RECORD INSPECTOR</span><h2><Table2 size={19} /> Data preview</h2><p>Inspect a page of records from the current dataset.</p></div>
+          <div className="dataset-preview-count"><span className="dataset-live-dot" /> Showing {ds.rowCount.toLocaleString()} records</div>
+        </div>
+        <div className="scroll dataset-table-scroll"><table className="dataset-preview-table">
+          <thead><tr><th className="dataset-row-number">#</th>{ds.columns.map((c) => <th key={c.id}>{c.name}</th>)}</tr></thead>
+          <tbody>{Array.from({ length: end - start }, (_, k) => start + k).map((i) => (
+            <tr key={i}><td className="dataset-row-number">{(i + 1).toLocaleString()}</td>{ds.columns.map((c, ci) => { const v = ds.data[c.id][i]; return <td key={c.id} className={isNumericType(c.type) ? 'num' : ''}>{v === null ? <span className="muted">null</span> : String(v)}</td>; })}</tr>
+          ))}</tbody>
+        </table></div>
+        <div className="dataset-footer-actions">
+          <div className="dataset-pager"><button className="btn" disabled={page === 0} onClick={() => setPage(page - 1)}><ChevronLeft size={15} /> Previous</button><span>Page <strong>{page + 1}</strong> of <strong>{pages}</strong><small> · Rows {(start + 1).toLocaleString()}–{end.toLocaleString()} of {ds.rowCount.toLocaleString()}</small></span><button className="btn" disabled={page >= pages - 1} onClick={() => setPage(page + 1)}>Next <ChevronRight size={15} /></button></div>
+          <button className="btn danger dataset-delete-action" onClick={async () => { if (await dialogs.confirm(`Delete ${ds.name} and its cleaning steps, analyses, charts and dashboards from this browser?`, { title: 'Delete dataset', confirmText: 'Delete dataset' })) remove(ds.id); }}><Trash2 size={14} /> Delete dataset</button>
+        </div>
+      </section>
+    </div>
+  );
+}
