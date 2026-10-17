@@ -33,12 +33,13 @@
 ## Verification notes
 - `node_modules` is not included. Run `npm install`, `npm test`, and `npm run build` in Acode.
 
-# JSA v0.3.0 — Workspace UI Foundation
+# JSA v0.3.0 — Workspace UI Foundation (revised)
 
 ## Major UI refresh begins
 - Reworked the app shell with a branded navigation rail, clearer section grouping, updated active states, and a privacy-oriented footer.
 - Added a contextual workspace header showing the current area, a short description, local-workspace status, and dataset count.
-- Rebuilt Home into a dashboard-style landing page with summary cards, a prominent import panel, sample-data access, workflow shortcuts, and an open-dataset list.
+- Made Home adaptive: new workspaces get onboarding and subtle feature discovery; returning users with datasets restored from IndexedDB get a quieter workspace-focused dashboard, saved-work status, quick actions, and recent datasets.
+- Fixed Export & Publish visibility by rendering its dropdown in a viewport-level portal, outside the navbar's clipping/scrolling container, with viewport-aware positioning for desktop and mobile.
 - Introduced a consistent dark visual foundation with larger cards, more generous spacing, responsive navigation, mobile-first layouts, and reduced-motion handling.
 
 ## Compatibility and testing

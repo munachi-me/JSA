@@ -153,4 +153,4 @@ Import workflows now handle file-reading and sample-data loading failures more c
 
 ## Current release: v0.3.0
 
-The JSA UI refresh starts with a redesigned workspace shell and a dashboard-style Home page. Navigation, section context, local privacy status, dataset summary cards, import/sample actions, workflow shortcuts, and the open-dataset list now use a more polished responsive dark interface. Core analytics and data workflows are preserved. Run `npm install`, `npm test`, and `npm run build` locally; dependencies are not bundled.
+The JSA UI refresh starts with a redesigned workspace shell and an adaptive Home dashboard. New workspaces see a lightweight onboarding experience with subtle feature discovery; returning users with datasets restored from IndexedDB see a quieter workspace-focused dashboard, saved-work status, quick workflow actions, and their recent datasets. The global Export & Publish dropdown now renders outside the scrolling navigation so it is not clipped or hidden inside the navbar, including on mobile. Core analytics and data workflows are preserved. Run `npm install`, `npm test`, and `npm run build` locally; dependencies are not bundled.

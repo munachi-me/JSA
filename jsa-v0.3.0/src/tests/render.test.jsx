@@ -10,7 +10,7 @@ const page = (path) => renderToString(
   <StaticRouter location={path}><App initialSources={[source]} persist={false} /></StaticRouter>);
 
 it('renders every page with a dataset loaded, without crashing', () => {
-  expect(page('/')).toContain('Bring in a dataset');
+  expect(page('/')).toContain('Welcome back');
   expect(page('/dataset')).toContain('Columns');
   expect(page('/clean')).toContain('Add a step');
   expect(page('/analysis')).toContain('Group and compare');
