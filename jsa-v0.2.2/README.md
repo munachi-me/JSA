@@ -1,28 +1,242 @@
-# JSA — JavaScript Analytics (Phases 1–3)
-Setup: `npm install` · `npm run dev` · `npm test` · `npm run build`
+# JSA v0.2.2 — JavaScript Analytics Platform
 
-## Done in Phase 1
-CSV (delimiter detection, quotes, malformed-row reporting) and JSON import; typed columnar dataset model with stable column ids; type inference with user override; descriptive statistics; group-by aggregation; data-quality profile; dataset workspace with paginated preview.
+> Adds chart specifications, a chart registry, chart data building, and dependency-free SVG chart rendering with a Charts page.
 
-## Conventions
-- Variance / std dev: sample (n−1) by default. Percentiles: linear interpolation (Excel PERCENTILE.INC).
-- ISO dates parse as UTC. Missing markers: empty, NA, N/A, null, NaN, none, "-".
-- Browser limit: 25 MB per file. Datasets are in memory only until Phase 7 persistence lands.
+| | |
+| --- | --- |
+| **Package** | `jsa` |
+| **Version** | `0.2.2` |
+| **Release stage** | Phase 3 · Phase 3 — Visualization |
+| **Application type** | Browser-based, client-side analytics application |
+| **Status** | Historical release |
 
-## Not built yet (shown disabled in the UI)
-Cleaning pipeline, Excel import, saved analyses, charts, dashboards, insights, export, storage.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [Release notes](RELEASE_NOTES.md) · [Audit](AUDIT.md) · [License](LICENSE)
 
-## Phase 2 additions
-- **Cleaning pipeline** (`core/transforms`): filter rows, drop/fill missing (mean, median, mode, constant), dedupe, change case, replace text, change type, round, calculated columns (safe expression parser, no eval), extract date parts, flag outliers (never removes them), sort. Steps are replayable; removing one undoes it; the original import is never modified. A failing step is skipped and reported.
-- **Filters**: eq/ne/range/between/contains/missing, all-or-any. Comparison operators exclude missing cells (use "is missing" to find them).
-- **KPI engine**: aggregate or ratio, per-part filters, percent/currency/number formats, optional target. Zero denominators return — with a warning.
-- **Saved analyses**: group-by + measures + filters + sort + top-N as a JSON definition that re-runs on the current cleaned data.
+## What JSA is
 
-## Still in memory only
-Datasets, pipelines, analyses and KPIs reset on reload until persistence lands.
+JSA is a JavaScript analytics platform for importing tabular datasets, preparing and cleaning them, running analytical operations, generating rule-based insights, creating KPIs and charts, assembling dashboards, and exporting results.
 
-## Phase 3 additions
-- **Chart spec** (`core/visualization/chartSpec.js`, schemaVersion 1) is independent of any rendering library; `chartData.js` turns spec + dataset into render-ready data using the analytics engine; renderers are plain React SVG in `components/charts`.
-- 12 chart types: bar, horizontal bar, line, area, pie, donut, scatter, histogram, stacked, grouped, table, KPI card. Charts can be built from cleaned data or from a saved analysis.
-- Honesty rules: bars always start at zero; pie/donut drop negatives with a warning; top-N truncation, scatter sampling (2,000 points) and table caps are stated; empty results show an empty state, never placeholder values. Every chart has a "Show data as table" alternative.
-- Date dimensions group by day/month/quarter/year (UTC). Histogram bins default to Sturges' rule; the last bin includes the maximum.
+In this release JSA is a single-page React application that runs entirely in the browser. Datasets are parsed, transformed, aggregated, and charted on the client, and persisted in IndexedDB in the current browser profile. There is no JSA backend to deploy and no server-side data store.
+
+## Purpose of this release
+
+Adds chart specifications, a chart registry, chart data building, and dependency-free SVG chart rendering with a Charts page.
+
+**Introduced or materially changed in this release**
+
+- Chart specification model and chart registry.
+- SVG cartesian and pie chart components.
+- Charts page with chart type, dimension, and measure selection.
+
+**Inherited from earlier releases** (verified by comparing the source trees of the adjacent version folders)
+
+- No pipeline steps were added here; all existing steps were inherited.
+- Pipeline steps inherited unchanged: 12.
+- Routes added here: `/charts`, `/charts/:id`.
+
+## Features in this release
+
+| Capability | State in this release |
+| --- | --- |
+| Dataset import and exploration | CSV and JSON import with delimiter detection, type inference, profiling, and paginated preview. |
+| Data cleaning and transformation | 12 replayable pipeline steps; the original import is never mutated. |
+| Descriptive and grouped analytics | Descriptive statistics and saved grouped analyses. |
+| KPI creation | KPI definitions with numerator/denominator parts, filters, formatting, and precision. |
+| Chart creation | Chart specifications rendered with dependency-free SVG. |
+
+**Application routes:** `/`, `/dataset`, `/dataset/:id`, `/clean`, `/clean/:id`, `/charts`, `/charts/:id`, `/analysis`, `/analysis/:id`
+
+## Requirements
+
+- Node.js 18 or newer is recommended.
+- npm.
+- A modern browser with JavaScript and IndexedDB support.
+
+## Installation
+
+Each version folder is an independent project. Install dependencies inside the version directory, not at the repository root, which only holds repository-wide documentation, the license, and the version folders.
+
+```bash
+git clone https://github.com/munachi-me/JSA.git
+cd JSA/jsa-v0.2.2
+npm install
+```
+
+`package-lock.json` is included, so `npm ci` is also valid for a reproducible install.
+
+## Development and startup
+
+```bash
+npm run dev
+```
+
+Vite prints a local URL (by default `http://localhost:5173`). The bundled sample dataset is `public/sample-data/sales.csv`.
+
+## npm scripts
+
+Verified against this folder's `package.json`:
+
+| Script | Command | Purpose |
+| --- | --- | --- |
+| `dev` | `vite` | Start the Vite development server with hot reload. |
+| `build` | `vite build` | Create a production build in `dist/`. |
+| `preview` | `vite preview` | Serve the production build locally for inspection. |
+| `test` | `vitest run` | Run the full Vitest suite once (non-watch mode). |
+
+## Testing
+
+```bash
+npm test
+```
+
+Test files (5):
+
+- `src/tests/core.test.js`
+- `src/tests/integration.test.js`
+- `src/tests/phase2.test.js`
+- `src/tests/render.test.jsx`
+- `src/tests/viz.test.js`
+
+Vitest is configured with `environment: 'node'` in `vite.config.js`. Files with a `.jsx` extension use React APIs but still execute in the Node environment, so they can only pass if they do not require a real DOM. Treat a failure there as an environment limitation of the suite, not as proof that the feature is broken.
+
+Read the output instead of assuming success. The audit document for this version records what was actually executed and when.
+
+## Build
+
+```bash
+npm run build
+npm run preview   # optional local check of the built output
+```
+
+The build writes to `dist/`, which is git-ignored. Later releases emit a chunk-size warning for the main bundle; that is informational, not a build failure.
+
+## Application modules
+
+### `src/(root)`
+
+| File | Purpose |
+| --- | --- |
+| `main.jsx` | No description recorded. |
+
+### `src/app`
+
+| File | Purpose |
+| --- | --- |
+| `App.jsx` | Application shell: route table, sidebar navigation, workspace header, global Export & Publish menu, and the storage status banner. |
+| `DatasetContext.jsx` | Workspace state provider: datasets, saved analyses, KPIs, charts, dashboards, insight statuses, pipeline state, and persistence, exposed to pages through React context. |
+
+### `src/components/charts`
+
+| File | Purpose |
+| --- | --- |
+| `Cartesian.jsx` | SVG cartesian chart renderer (bar, line, area, grouped, stacked, scatter, histogram). |
+| `ChartRenderer.jsx` | Selects and renders the appropriate chart component for a chart specification. |
+| `PieChart.jsx` | SVG pie and donut renderer. |
+| `palette.js` | Default colour palette shared by the in-app chart renderers. |
+
+### `src/components/data`
+
+| File | Purpose |
+| --- | --- |
+| `DatasetPicker.jsx` | Dataset switcher shared by the workspace pages. |
+| `FilterEditor.jsx` | Condition editor used by filters, analyses, charts, and KPIs. |
+| `PartEditor.jsx` | KPI numerator/denominator part editor. |
+| `StepForm.jsx` | Generic transformation step form rendered from the parameter metadata declared in the step registry. |
+
+### `src/core/analytics`
+
+| File | Purpose |
+| --- | --- |
+| `aggregation.js` | Group-by and aggregate operations used by grouped analyses, KPIs, and chart data building. |
+| `analyses.js` | Saved grouped-analysis definitions and their evaluation against the current dataset. |
+| `descriptive.js` | Descriptive statistics (count, missing, mean, median, min, max, and related measures) over column values. |
+| `kpis.js` | KPI model and calculation, including numerator/denominator parts, filters, formatting, precision, and target status. |
+
+### `src/core/data`
+
+| File | Purpose |
+| --- | --- |
+| `csvParser.js` | RFC-4180-style CSV parser with delimiter detection, quoted fields, escaped quotes, embedded newlines, and malformed-row reporting. Pure function with no DOM dependency. |
+| `dataTypes.js` | Type inference and parsing for numeric, boolean, date, datetime, time, text, categorical, and identifier columns, including missing-value recognition. |
+| `datasetModel.js` | Internal dataset representation. Columns have stable ids (`c0`, `c1`, …) and columnar value storage, so duplicate or renamed headers never break references. Provides CSV and JSON dataset constructors and immutable column helpers. |
+| `profile.js` | Dataset profiling: row and column counts, missing cells, distinct values, duplicate rows, and per-column summary statistics. |
+
+### `src/core/transforms`
+
+| File | Purpose |
+| --- | --- |
+| `expression.js` | Small arithmetic expression evaluator used by calculated columns. |
+| `filters.js` | Row-level filter predicate evaluation shared by the filter step, analyses, charts, and dashboard filters. |
+| `pipeline.js` | Applies an ordered list of steps to the original import and produces the current dataset, so the source data is never destroyed. |
+| `rows.js` | Immutable row and column helpers: select rows, add a column, map a column, require a column, and null checks. |
+| `sorting.js` | Stable multi-column sorting with support for chronological date/time ordering and natural ordering of month and weekday labels. |
+| `stepRegistry.js` | Transformation step catalogue. Each step declares its parameters (so the UI renders a generic form) and an `apply()` that returns a new dataset plus a plain-language summary of what changed. Steps never mutate their input. |
+
+### `src/core/visualization`
+
+| File | Purpose |
+| --- | --- |
+| `chartData.js` | Builds render-ready chart data from a dataset and a chart specification, with warnings and truncation information for large or awkward inputs. |
+| `chartRegistry.js` | Registry of supported chart types and their metadata. |
+| `chartSpec.js` | Chart specification model: chart type, dimension, measures, series, filters, sorting, colours, axis titles, and time grain. |
+| `scales.js` | Small scale and tick helpers for the SVG chart components. |
+
+### `src/pages`
+
+| File | Purpose |
+| --- | --- |
+| `AnalysisPage.jsx` | Descriptive profiles, grouped analysis with saved definitions, KPIs, correlation, and later recommended analyses. |
+| `CleanPage.jsx` | Transformation pipeline: build steps, review their summaries and row-count impact, reorder or remove them, and reset the pipeline. |
+| `DatasetPage.jsx` | Dataset Explorer: import, dataset switching, summary cards, column schema, type overrides, and paginated data preview. In later releases it also hosts data-quality intelligence findings. |
+| `HomePage.jsx` | Workspace landing page with dataset and workspace summaries, import actions, and either onboarding or saved-work content depending on whether the workspace is empty. |
+| `VisualizationPage.jsx` | Saved chart library with chart previews; the chart authoring UI lives here before the dedicated Chart Builder is split out. |
+
+### `src/styles`
+
+| File | Purpose |
+| --- | --- |
+| `global.css` | No description recorded. |
+
+### Transformation step registry
+
+`src/core/transforms/stepRegistry.js` declares 12 pipeline steps. Every step declares its parameters, so the UI renders forms generically, and returns a new dataset plus a plain-language summary of what changed.
+
+| Step key | Label | What it does |
+| --- | --- | --- |
+| `filterRows` | Filter rows | Keep or remove rows that match all/any of a set of conditions. |
+| `dropMissing` | Remove rows with missing values | Drop a row when any chosen column is missing a value. |
+| `fillMissing` | Fill missing values | Fill gaps with the mean, median, most common value, or a constant. |
+| `dedupe` | Remove duplicate rows | Remove exact duplicate rows, optionally considering a subset of columns. |
+| `changeCase` | Change text case | Convert text to upper case, lower case, or title case. |
+| `replaceText` | Replace text | Replace matching text with a new value. |
+| `convertType` | Convert column type | Reinterpret a column as another data type. |
+| `round` | Round numbers | Round numeric values to a chosen number of decimals. |
+| `calcColumn` | Calculated column | Add a column computed from an arithmetic expression over other columns. |
+| `extractDate` | Extract date part | Add a column derived from a date or time part, such as year, month, weekday, hour, or ISO week. |
+| `flagOutliers` | Flag outliers | Mark numeric values outside the 1.5×IQR range so they can be reviewed or filtered. |
+| `sort` | Sort rows | Sort rows by one or more columns in ascending or descending order. |
+
+## Usage guide
+
+1. **Import** — open Datasets and import a CSV or JSON file, or load the bundled sample data. JSA detects the delimiter, infers column types, and reports malformed rows.
+2. **Prepare** — open Clean data and add transformation steps. Every step is appended to a replayable pipeline, and the original import stays unchanged.
+3. **Analyse** — use Analysis for descriptive profiles and grouped analyses, and define KPIs from numerator/denominator parts.
+4. **Visualise** — build charts on the Charts page from a dimension and one or more measures, then save them to the chart library.
+
+## Known limitations
+
+- Datasets and workspace state are stored in the current browser profile only; clearing site data removes them, and there is no built-in cloud sync or multi-user access.
+
+The [audit](AUDIT.md) separates confirmed limitations from items that still require verification.
+
+## Related documentation
+
+- [Root README](../../README.md) — project overview, architecture, and the full version history.
+- [RELEASE_NOTES.md](RELEASE_NOTES.md) — what changed in this release and its verification status.
+- [AUDIT.md](AUDIT.md) — technical audit of this release.
+- [Screenshot capture guide](../../docs/screenshots/README.md) — how to capture and contribute screenshots (none are committed yet).
+- [LICENSE](LICENSE) — MIT License for this release.
+
+## License
+
+This release is distributed under the MIT License. See the version [LICENSE](LICENSE) and the repository-root [LICENSE](../../LICENSE).

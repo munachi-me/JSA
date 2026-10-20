@@ -1,14 +1,73 @@
-# JSA v0.2.73 — Data-preparation workflow improvements
+# RELEASE_NOTES.md — JSA v0.2.73
 
-## Added
+| | |
+| --- | --- |
+| **Version** | `0.2.73` |
+| **Stage** | Phase 6 |
+| **Recorded date** | 2026-10-15 (from the git commit that added this folder) |
+| **Latest in repository** | No |
 
-- Up/down controls for reordering cleaning pipeline steps.
-- Clear disabled states at the top and bottom of the pipeline.
-- Before/after row counts for successful steps that change the number of rows.
-- Pipeline-ordering tests covering immutable reordering, invalid/boundary moves, and changed results when the order of filtering and deduplication changes.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [README](README.md) · [Audit](AUDIT.md)
 
-## Behavior notes
+## Release purpose
 
-- The pipeline still replays from the original imported dataset; the source data is not mutated.
-- Reordering can change the result because each step receives the previous step's output.
-- Full test and production build results must be verified in the release environment; do not assume they passed unless run successfully.
+Pipeline reordering with row-count impact summaries.
+
+## New features
+
+- Reorder saved pipeline steps and see each step's row-count impact.
+
+## Improvements
+
+- Pipeline state handling moved into `DatasetContext`; Clean page UI updated.
+- Added `src/tests/pipeline-workflow.test.js`.
+
+## Scope relative to the previous release
+
+- No new source modules were added; this release changed existing modules.
+- Application code: 4,160 → 4,189 lines (+29).
+
+Compared against [v0.2.72](../jsa-v0.2.72/RELEASE_NOTES.md).
+
+## Breaking changes
+
+None recorded. No source module present in the previous release was removed, and no route was renamed or dropped, as verified by comparing the source trees.
+
+## Compatibility and migration
+
+Each version directory is an independent project with its own `package.json` and `package-lock.json`. To use this release, install its dependencies inside its own folder; installing at the repository root does not apply to any version.
+
+Datasets persisted in IndexedDB are keyed to the browser origin. Running a different version folder on a different dev-server port is a different origin, so previously saved work will not appear there. Workspace data is not migrated between versions by the repository.
+
+## Verification status
+
+| Check | Status |
+| --- | --- |
+| Test suite | **Not executed** in this documentation pass. |
+| Production build | **Not executed** in this documentation pass. |
+| Browser behaviour | **Not verified** — no browser session was driven during documentation. |
+| Coverage | **Not measured.** No coverage figure is claimed. |
+
+"Executed and passed" above means the command was run against this exact folder in the documentation environment and exited successfully. It does not mean every feature was exercised, and it does not constitute a browser or security verification.
+
+## Historical provenance
+
+This release note was reconstructed from:
+
+- The git commit that introduced this folder: *v0.2.73*.
+- The milestone document `PHASE6_MILESTONE10.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE2.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE3.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE4.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE5.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE6.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE7.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE8.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE9.md` originally shipped in this folder.
+- A direct source diff against the adjacent version folders.
+
+Milestone documents from this folder have been consolidated into `README.md`, `AUDIT.md`, and this file, and then removed from the version directory to reduce documentation clutter. The source tree, tests, and configuration files were not modified.
+
+## License
+
+MIT. See [LICENSE](LICENSE) in this folder and the repository-root [LICENSE](../../LICENSE).

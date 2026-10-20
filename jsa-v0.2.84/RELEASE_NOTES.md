@@ -1,18 +1,72 @@
-# JSA v0.2.84 — Export & Reporting Pack
+# RELEASE_NOTES.md — JSA v0.2.84
 
-## Highlights
-- Export grouped analysis results to CSV with UTF-8 BOM, correct quoting, and spreadsheet-formula injection mitigation for untrusted text values.
-- Export a portable JSON analysis report with dataset metadata, analysis definition, row counts, result columns, warnings, and result rows.
-- Export a readable Markdown report summary for documentation, project reports, and GitHub.
-- Keep CSV, JSON, and Markdown exports tied to the currently displayed successful analysis result.
-- Revoke temporary download URLs after the browser has had time to start the download.
+| | |
+| --- | --- |
+| **Version** | `0.2.84` |
+| **Stage** | Phase 6 |
+| **Recorded date** | 2026-10-15 (from the git commit that added this folder) |
+| **Latest in repository** | No |
 
-## Compatibility
-- Builds on v0.2.83 and retains the existing dataset, preparation, analytical, charting, dashboard, and interactive/static HTML export workflows.
-- Existing project structure is preserved. `node_modules` is intentionally excluded; run `npm install` after extracting.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [README](README.md) · [Audit](AUDIT.md)
 
-## Verification
-Run `npm test` and `npm run build` in the project directory. Automated coverage includes CSV escaping/formula protection, report metadata, Markdown output, and invalid report input handling.
+## Release purpose
+
+More analysis export options, backed by a new export reporting module.
+
+## New features
+
+- `src/core/export/reporting.js` with reporting helpers for analysis and insight output.
+- Additional export options on the Analysis page.
+
+## Scope relative to the previous release
+
+- Source modules added: `core/export/reporting.js`.
+- Application code: 4,422 → 4,468 lines (+46).
+
+Compared against [v0.2.83](../jsa-v0.2.83/RELEASE_NOTES.md).
+
+## Breaking changes
+
+None recorded. No source module present in the previous release was removed, and no route was renamed or dropped, as verified by comparing the source trees.
+
+## Compatibility and migration
+
+Each version directory is an independent project with its own `package.json` and `package-lock.json`. To use this release, install its dependencies inside its own folder; installing at the repository root does not apply to any version.
+
+Datasets persisted in IndexedDB are keyed to the browser origin. Running a different version folder on a different dev-server port is a different origin, so previously saved work will not appear there. Workspace data is not migrated between versions by the repository.
+
+## Verification status
+
+| Check | Status |
+| --- | --- |
+| Test suite | **Not executed** in this documentation pass. |
+| Production build | **Not executed** in this documentation pass. |
+| Browser behaviour | **Not verified** — no browser session was driven during documentation. |
+| Coverage | **Not measured.** No coverage figure is claimed. |
+
+"Executed and passed" above means the command was run against this exact folder in the documentation environment and exited successfully. It does not mean every feature was exercised, and it does not constitute a browser or security verification.
+
+## Historical provenance
+
+This release note was reconstructed from:
+
+- The git commit that introduced this folder: *more analysis export options*.
+- The milestone document `PHASE6_MILESTONE10.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE11.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE12.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE13.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE2.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE3.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE4.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE5.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE6.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE7.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE8.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE9.md` originally shipped in this folder.
+- A direct source diff against the adjacent version folders.
+
+Milestone documents from this folder have been consolidated into `README.md`, `AUDIT.md`, and this file, and then removed from the version directory to reduce documentation clutter. The source tree, tests, and configuration files were not modified.
 
 ## License
-JSA is distributed under the MIT License. See [`LICENSE`](./LICENSE).
+
+MIT. See [LICENSE](LICENSE) in this folder and the repository-root [LICENSE](../../LICENSE).

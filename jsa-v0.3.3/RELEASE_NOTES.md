@@ -1,79 +1,86 @@
-# JSA v0.2.92 — Global Export Menu & Dataset Downloads
+# RELEASE_NOTES.md — JSA v0.3.3
 
-## Global Export & Publish menu
-- Replaced the disabled navbar placeholder with an accessible, context-aware dropdown.
-- Menu exports the current cleaned dataset or untouched original import as CSV or JSON.
-- CSV exports use visible column names, preserve quoting/newlines, and neutralize spreadsheet formula injection in text values.
-- JSON exports are plain arrays of named row objects, compatible with JSA's JSON import workflow.
-- On Analysis, Charts, and Dashboards pages, the menu can jump to the page's existing export controls.
-- Online publishing is clearly marked as not yet available; no fake publishing action is exposed.
+| | |
+| --- | --- |
+| **Version** | `0.3.3` |
+| **Stage** | Phase 6 |
+| **Recorded date** | 2026-10-17 (from the git commit that added this folder) |
+| **Latest in repository** | No |
 
-## Chart data export
-- Added **Export plotted data (CSV)** for the current chart preview.
-- Supports category, multi-series, scatter, histogram, table, and KPI chart data.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [README](README.md) · [Audit](AUDIT.md)
 
-## Technical notes
-- Original imported data remains separate from the cleaned working dataset; exports select the correct version.
-- Added unit tests for dataset CSV/JSON and chart-data CSV export helpers.
-- `node_modules` is intentionally excluded. Run `npm install` locally before testing.
+## Release purpose
 
+Phase 6 Milestone 23: Analysis workspace UI and workspace-header corrections.
 
-# JSA v0.2.93 — Import Reliability & Workflow Feedback
+## Improvements
 
-## Import reliability
-- File reading failures are caught and shown as actionable in-app errors instead of becoming unhandled promise rejections.
-- Sample dataset loading now handles failed HTTP responses and network/fetch exceptions with a visible message.
-- A missing file selection safely does nothing; supported file and 25 MB size checks remain in place.
+- Analysis page UI refresh.
+- Dataset Explorer empty state replaced with the shared responsive empty-state card.
+- Clean Data header replaced with the compact Data Workspace header pattern used elsewhere.
 
-## Workflow feedback
-- Import actions are temporarily disabled while a file or sample is being prepared, preventing accidental repeated imports.
-- A live status message tells users when JSA is reading and preparing a dataset.
-- Existing import validation errors remain visible on the Home page.
+## Important behaviour notes
 
-## Verification notes
-- `node_modules` is not included. Run `npm install`, `npm test`, and `npm run build` in Acode.
+- Cleaning, dataset inspection, and analysis logic were unchanged.
 
-# JSA v0.3.0 — Workspace UI Foundation (revised)
+## Scope relative to the previous release
 
-## Major UI refresh begins
-- Reworked the app shell with a branded navigation rail, clearer section grouping, updated active states, and a privacy-oriented footer.
-- Added a contextual workspace header showing the current area, a short description, local-workspace status, and dataset count.
-- Made Home adaptive: new workspaces get onboarding and subtle feature discovery; returning users with datasets restored from IndexedDB get a quieter workspace-focused dashboard, saved-work status, quick actions, and recent datasets.
-- Fixed Export & Publish visibility by rendering its dropdown in a viewport-level portal, outside the navbar's clipping/scrolling container, with viewport-aware positioning for desktop and mobile.
-- Introduced a consistent dark visual foundation with larger cards, more generous spacing, responsive navigation, mobile-first layouts, and reduced-motion handling.
+- No new source modules were added; this release changed existing modules.
+- Application code: 4,993 → 5,045 lines (+52).
 
-## Compatibility and testing
-- Existing feature pages, routes, data workflows, and export controls remain in place.
-- `node_modules` is not bundled. Run `npm install`, `npm test`, and `npm run build` in Acode before using the release.
+Compared against [v0.3.2](../jsa-v0.3.2/RELEASE_NOTES.md).
 
-# JSA v0.3.01 — Dataset Explorer UI
+## Breaking changes
 
-- Introduced a refreshed Dataset page header, quick Clean data action, and more prominent dataset switcher.
-- Added at-a-glance summary cards for rows, columns, missing cells, and duplicate rows.
-- Added a searchable column schema with clearer data-type controls and more compact Rename/Delete actions.
-- Refined the data preview table, row numbering, page controls, and mobile layouts.
-- Preserved dataset type overrides, column rename/delete behavior, import warnings, quality notices, dataset switching, and deletion.
-- See `PHASE6_MILESTONE21.md` for the release scope. Install dependencies and run the full tests/build locally before using this release.
+None recorded. No source module present in the previous release was removed, and no route was renamed or dropped, as verified by comparing the source trees.
 
+## Compatibility and migration
 
-# JSA v0.3.2 — Clean Workspace UI
+Each version directory is an independent project with its own `package.json` and `package-lock.json`. To use this release, install its dependencies inside its own folder; installing at the repository root does not apply to any version.
 
-## Clean page redesign
-- Rebuilt the Clean page into a responsive data-preparation workspace with a clear page header, dataset picker, and navigation to Dataset Explorer and Analysis.
-- Added summary cards for imported rows, current rows, pipeline steps, and available transformation operations.
-- Redesigned the step builder with clearer operation selection, improved form spacing, and a visible reminder that the original import remains unchanged.
-- Redesigned the pipeline as an ordered sequence with applied/skipped status, transformation summaries, row-count changes, and touch-friendly reorder/remove controls.
-- Added an intentional empty state to guide first-time cleaning, plus a clearer reset action when steps exist.
-- Preserved existing transformation, preview, apply, reorder, remove, reset-confirmation, and dataset-selection behavior.
+Datasets persisted in IndexedDB are keyed to the browser origin. Running a different version folder on a different dev-server port is a different origin, so previously saved work will not appear there. Workspace data is not migrated between versions by the repository.
 
-## Verification
-- ZIP structure and required release files checked. Full test/build verification was not run in this packaging environment; run `npm install`, `npm test`, and `npm run build` in Acode.
-- `node_modules` is intentionally excluded. MIT `LICENSE` is included.
+## Verification status
 
+| Check | Status |
+| --- | --- |
+| Test suite | **Not executed** in this documentation pass. |
+| Production build | **Not executed** in this documentation pass. |
+| Browser behaviour | **Not verified** — no browser session was driven during documentation. |
+| Coverage | **Not measured.** No coverage figure is claimed. |
 
-## v0.3.3 — Workspace UI Refinements
-- Updated the Analysis page to use the compact Dataset Explorer-style workspace header.
-- Added quick access to Clean Data and Charts while retaining the dataset picker.
-- Reworked the Dataset Explorer's no-dataset state into a polished onboarding panel with a clear import/open-data action and copy specific to inspecting data.
-- Replaced the Clean Data page's oversized introductory header with the compact Dataset Explorer header pattern, showing the current dataset name, dataset picker, and quick links to Dataset Explorer and Analysis.
-- Added responsive layout refinements for mobile screens while preserving cleaning and analysis behavior.
+"Executed and passed" above means the command was run against this exact folder in the documentation environment and exited successfully. It does not mean every feature was exercised, and it does not constitute a browser or security verification.
+
+## Historical provenance
+
+This release note was reconstructed from:
+
+- The git commit that introduced this folder: *ui for analysis page*.
+- The milestone document `PHASE6_MILESTONE10.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE11.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE12.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE13.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE14.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE15.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE16.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE17.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE18.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE2.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE20.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE21.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE22.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE23.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE3.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE4.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE5.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE6.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE7.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE8.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE9.md` originally shipped in this folder.
+- A direct source diff against the adjacent version folders.
+
+Milestone documents from this folder have been consolidated into `README.md`, `AUDIT.md`, and this file, and then removed from the version directory to reduce documentation clutter. The source tree, tests, and configuration files were not modified.
+
+## License
+
+MIT. See [LICENSE](LICENSE) in this folder and the repository-root [LICENSE](../../LICENSE).

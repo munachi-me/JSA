@@ -1,13 +1,73 @@
-# JSA v0.2.82 — Analysis Result Export
+# RELEASE_NOTES.md — JSA v0.2.82
 
-## Highlights
-- Export grouped analysis results directly to CSV from the Analysis page.
-- Include readable column headings in the exported file.
-- Correctly escape commas, quotes, and line breaks in values.
-- Use UTF-8 with BOM to improve compatibility with spreadsheet applications.
-- Name the downloaded file from the saved/current analysis name when available.
-- Disable export when an analysis has no result rows.
+| | |
+| --- | --- |
+| **Version** | `0.2.82` |
+| **Stage** | Phase 6 |
+| **Recorded date** | 2026-10-15 (from the git commit that added this folder) |
+| **Latest in repository** | No |
 
-## Compatibility
-- Preserves the v0.2.81 Acode-edited baseline and existing features.
-- `node_modules` is intentionally excluded; install dependencies locally with `npm install`.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [README](README.md) · [Audit](AUDIT.md)
+
+## Release purpose
+
+Phase 6 Milestone 12: CSV export for grouped analysis results.
+
+## New features
+
+- Export grouped analysis results to CSV with headings, RFC-4180-safe escaping, and a UTF-8 BOM for spreadsheet compatibility.
+
+## Improvements
+
+- The export button is disabled when the result has no rows.
+
+## Scope relative to the previous release
+
+- No new source modules were added; this release changed existing modules.
+- Application code: 4,382 → 4,407 lines (+25).
+
+Compared against [v0.2.81](../jsa-v0.2.81/RELEASE_NOTES.md).
+
+## Breaking changes
+
+None recorded. No source module present in the previous release was removed, and no route was renamed or dropped, as verified by comparing the source trees.
+
+## Compatibility and migration
+
+Each version directory is an independent project with its own `package.json` and `package-lock.json`. To use this release, install its dependencies inside its own folder; installing at the repository root does not apply to any version.
+
+Datasets persisted in IndexedDB are keyed to the browser origin. Running a different version folder on a different dev-server port is a different origin, so previously saved work will not appear there. Workspace data is not migrated between versions by the repository.
+
+## Verification status
+
+| Check | Status |
+| --- | --- |
+| Test suite | **Not executed** in this documentation pass. |
+| Production build | **Not executed** in this documentation pass. |
+| Browser behaviour | **Not verified** — no browser session was driven during documentation. |
+| Coverage | **Not measured.** No coverage figure is claimed. |
+
+"Executed and passed" above means the command was run against this exact folder in the documentation environment and exited successfully. It does not mean every feature was exercised, and it does not constitute a browser or security verification.
+
+## Historical provenance
+
+This release note was reconstructed from:
+
+- The milestone document `PHASE6_MILESTONE10.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE11.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE12.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE2.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE3.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE4.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE5.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE6.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE7.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE8.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE9.md` originally shipped in this folder.
+- A direct source diff against the adjacent version folders.
+
+Milestone documents from this folder have been consolidated into `README.md`, `AUDIT.md`, and this file, and then removed from the version directory to reduce documentation clutter. The source tree, tests, and configuration files were not modified.
+
+## License
+
+MIT. See [LICENSE](LICENSE) in this folder and the repository-root [LICENSE](../../LICENSE).

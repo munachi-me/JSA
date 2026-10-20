@@ -1,17 +1,71 @@
-# JSA v0.2.71 Release Notes
+# RELEASE_NOTES.md — JSA v0.2.71
 
-## Fixes
+| | |
+| --- | --- |
+| **Version** | `0.2.71` |
+| **Stage** | Phase 6 |
+| **Recorded date** | 2026-10-15 (from the git commit that added this folder) |
+| **Latest in repository** | No |
 
-- Fixed the **Remove condition** button in the IF-rule editor so it can remove the final condition as well as earlier conditions.
-- Added an empty-state message when an IF rule has no conditions.
-- Users can add a condition again after removing all conditions.
-- Applying a conditional-column transformation still requires each IF rule to contain at least one condition; existing validation enforces this.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [README](README.md) · [Audit](AUDIT.md)
 
-## Retained behavior
+## Release purpose
 
-- This is a focused bug-fix release based on v0.2.7.
-- Column rename/delete, dataset selection, responsive styling, and the conditional-column/split/combine features are retained.
+Refines the conditional rules editor and column creation forms, and surfaces column operations in Dataset Explorer.
 
-## Verification note
+## Improvements
 
-The release archive and version metadata were checked. The full automated test suite and production build have not been run in this environment; verify them in your local setup before publishing.
+- Conditional rule editor and step form refinements.
+- Dataset page surfaces column transformation results.
+- Regression coverage extended for conditional transformations.
+
+## Scope relative to the previous release
+
+- No new source modules were added; this release changed existing modules.
+- Pipeline steps added: `renameColumn`, `deleteColumn`.
+- Application code: 3,997 → 4,100 lines (+103).
+
+Compared against [v0.2.66](../jsa-v0.2.66/RELEASE_NOTES.md).
+
+## Breaking changes
+
+None recorded. No source module present in the previous release was removed, and no route was renamed or dropped, as verified by comparing the source trees.
+
+## Compatibility and migration
+
+Each version directory is an independent project with its own `package.json` and `package-lock.json`. To use this release, install its dependencies inside its own folder; installing at the repository root does not apply to any version.
+
+Datasets persisted in IndexedDB are keyed to the browser origin. Running a different version folder on a different dev-server port is a different origin, so previously saved work will not appear there. Workspace data is not migrated between versions by the repository.
+
+## Verification status
+
+| Check | Status |
+| --- | --- |
+| Test suite | **Not executed** in this documentation pass. |
+| Production build | **Not executed** in this documentation pass. |
+| Browser behaviour | **Not verified** — no browser session was driven during documentation. |
+| Coverage | **Not measured.** No coverage figure is claimed. |
+
+"Executed and passed" above means the command was run against this exact folder in the documentation environment and exited successfully. It does not mean every feature was exercised, and it does not constitute a browser or security verification.
+
+## Historical provenance
+
+This release note was reconstructed from:
+
+- The git commit that introduced this folder: *Version 0.2.71 update*.
+- The milestone document `PHASE6_MILESTONE10.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE2.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE3.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE4.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE5.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE6.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE7.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE8.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE9.md` originally shipped in this folder.
+- A direct source diff against the adjacent version folders.
+
+Milestone documents from this folder have been consolidated into `README.md`, `AUDIT.md`, and this file, and then removed from the version directory to reduce documentation clutter. The source tree, tests, and configuration files were not modified.
+
+## License
+
+MIT. See [LICENSE](LICENSE) in this folder and the repository-root [LICENSE](../../LICENSE).

@@ -1,15 +1,75 @@
-# JSA v0.2.9 — Dashboard Builder UX & Project Management Foundation
+# RELEASE_NOTES.md — JSA v0.2.9
 
-## Dashboard builder improvements
-- Settings no longer open simply because a dashboard element is selected. Use the element's settings icon to open the contextual settings panel, and close it independently.
-- Responsive dashboard layout now stacks elements cleanly on narrow screens instead of forcing desktop grid row/column placements onto mobile.
-- Dashboard content and tables are constrained to their cards, with horizontally scrollable tables and safer minimum sizes.
-- Resize previews enforce minimum dimensions to avoid inverted or collapsed cards.
-- Added a separate **Chart table** dashboard element that references a saved chart. Add it from a chart's settings panel; it is a separate card rather than a table embedded inside the chart card.
-- Static and interactive HTML exports now recognize the separate table element and render table output for it. Interactive HTML shows up to 100 source rows for this table component.
-- Existing dashboard filters, chart/KPI components, layout schema and project structure are preserved.
+| | |
+| --- | --- |
+| **Version** | `0.2.9` |
+| **Stage** | Phase 6 |
+| **Recorded date** | 2026-10-15 (from the git commit that added this folder) |
+| **Latest in repository** | No |
 
-## Validation
-- Core schema smoke check passed for adding a chart and separate table component, and validating the dashboard.
-- Static and interactive export modules load successfully under Node.
-- Full Vitest suite and Vite production build could not be run in this environment because dependencies were unavailable; `npm install` did not complete. Run `npm install`, `npm test`, and `npm run build` locally before treating this release as fully verified.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [README](README.md) · [Audit](AUDIT.md)
+
+## Release purpose
+
+Phase 6 Milestone 14: responsive dashboard builder.
+
+## Improvements
+
+- Contextual component settings panel with explicit open/close controls.
+- Mobile-first vertical dashboard layout that prevents component overlap.
+- More robust resize minimums and content overflow behaviour.
+- Separate chart-linked table cards, recognised by both HTML exporters.
+
+## Scope relative to the previous release
+
+- Source modules added: `core/export/reporting.js`.
+- Application code: 4,346 → 4,496 lines (+150).
+
+Compared against [v0.2.8](../jsa-v0.2.8/RELEASE_NOTES.md).
+
+## Breaking changes
+
+None recorded. No source module present in the previous release was removed, and no route was renamed or dropped, as verified by comparing the source trees.
+
+## Compatibility and migration
+
+Each version directory is an independent project with its own `package.json` and `package-lock.json`. To use this release, install its dependencies inside its own folder; installing at the repository root does not apply to any version.
+
+Datasets persisted in IndexedDB are keyed to the browser origin. Running a different version folder on a different dev-server port is a different origin, so previously saved work will not appear there. Workspace data is not migrated between versions by the repository.
+
+## Verification status
+
+| Check | Status |
+| --- | --- |
+| Test suite | **Executed and passed.** `npx vitest run` reported 13 passed and 127 passed. |
+| Production build | **Not executed** in this documentation pass. |
+| Browser behaviour | **Not verified** — no browser session was driven during documentation. |
+| Coverage | **Not measured.** No coverage figure is claimed. |
+
+"Executed and passed" above means the command was run against this exact folder in the documentation environment and exited successfully. It does not mean every feature was exercised, and it does not constitute a browser or security verification.
+
+## Historical provenance
+
+This release note was reconstructed from:
+
+- The git commit that introduced this folder: *version 2.9 better dashboard ux*.
+- The milestone document `PHASE6_MILESTONE10.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE11.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE12.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE13.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE14.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE2.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE3.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE4.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE5.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE6.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE7.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE8.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE9.md` originally shipped in this folder.
+- A direct source diff against the adjacent version folders.
+
+Milestone documents from this folder have been consolidated into `README.md`, `AUDIT.md`, and this file, and then removed from the version directory to reduce documentation clutter. The source tree, tests, and configuration files were not modified.
+
+## License
+
+MIT. See [LICENSE](LICENSE) in this folder and the repository-root [LICENSE](../../LICENSE).

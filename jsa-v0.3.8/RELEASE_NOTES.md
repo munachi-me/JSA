@@ -1,162 +1,88 @@
-# JSA v0.3.8 — Dashboard Components & Analysis UI Polish
+# RELEASE_NOTES.md — JSA v0.3.8
 
-## Responsive dashboard editor revision
-- Reworked the component settings experience after the initial v0.3.8 pass: desktop keeps a dedicated side panel, tablet uses a right-side drawer, and phones use a bottom-sheet editor with its own scroll area.
-- Prevented settings controls from squeezing the dashboard canvas or overflowing narrow screens. Inputs, selects, checkboxes, position/size fields, and action buttons now resize to the available width.
-- Improved component headers and the add-component toolbar for small screens, including narrower phones.
-- Kept the existing dashboard data model, component actions, filtering, layout, export behavior, and Analysis UI updates intact.
+| | |
+| --- | --- |
+| **Version** | `0.3.8` |
+| **Stage** | Phase 6 |
+| **Recorded date** | 2026-10-18 (from the git commit that added this folder) |
+| **Latest in repository** | No |
 
-## Dashboard editor styling
-- Refined dashboard component containers, selected/hover states, drag and resize controls, KPI/text elements, settings panel, add-component toolbar, and empty dashboard canvas.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [README](README.md) · [Audit](AUDIT.md)
 
-## Analysis UI
-- Refined profile/correlation cards, frequency bars, KPI builder, group-and-compare controls, export controls, and saved analysis list.
+## Release purpose
 
-## Validation
-- ZIP structure and required files are checked before delivery. Run `npm install`, `npm test`, and `npm run build` in your environment to verify the application.
-- `node_modules` is intentionally excluded.
+Phase 6 Milestone 24: Dashboard components and Analysis UI polish.
 
+## Improvements
 
-## Global Export & Publish menu
-- Replaced the disabled navbar placeholder with an accessible, context-aware dropdown.
-- Menu exports the current cleaned dataset or untouched original import as CSV or JSON.
-- CSV exports use visible column names, preserve quoting/newlines, and neutralize spreadsheet formula injection in text values.
-- JSON exports are plain arrays of named row objects, compatible with JSA's JSON import workflow.
-- On Analysis, Charts, and Dashboards pages, the menu can jump to the page's existing export controls.
-- Online publishing is clearly marked as not yet available; no fake publishing action is exposed.
+- Refined dashboard component containers with selection and hover states and legible headers.
+- Restyled drag, settings, duplicate, remove, and resize controls without changing behaviour.
+- Redesigned component settings panel with touch-friendly mobile sizing.
+- Refined Analysis profile and correlation cards, Key Metrics, KPI definition, and group/compare areas.
 
-## Chart data export
-- Added **Export plotted data (CSV)** for the current chart preview.
-- Supports category, multi-series, scatter, histogram, table, and KPI chart data.
+## Important behaviour notes
 
-## Technical notes
-- Original imported data remains separate from the cleaned working dataset; exports select the correct version.
-- Added unit tests for dataset CSV/JSON and chart-data CSV export helpers.
-- `node_modules` is intentionally excluded. Run `npm install` locally before testing.
+- UI-only release: analytics, dashboard component models, layout, saving, and exports retained.
 
+## Scope relative to the previous release
 
-# JSA v0.2.93 — Import Reliability & Workflow Feedback
+- No new source modules were added; this release changed existing modules.
+- Application code: 5,308 → 5,478 lines (+170).
 
-## Import reliability
-- File reading failures are caught and shown as actionable in-app errors instead of becoming unhandled promise rejections.
-- Sample dataset loading now handles failed HTTP responses and network/fetch exceptions with a visible message.
-- A missing file selection safely does nothing; supported file and 25 MB size checks remain in place.
+Compared against [v0.3.7](../jsa-v0.3.7/RELEASE_NOTES.md).
 
-## Workflow feedback
-- Import actions are temporarily disabled while a file or sample is being prepared, preventing accidental repeated imports.
-- A live status message tells users when JSA is reading and preparing a dataset.
-- Existing import validation errors remain visible on the Home page.
+## Breaking changes
 
-## Verification notes
-- `node_modules` is not included. Run `npm install`, `npm test`, and `npm run build` in Acode.
+None recorded. No source module present in the previous release was removed, and no route was renamed or dropped, as verified by comparing the source trees.
 
-# JSA v0.3.0 — Workspace UI Foundation (revised)
+## Compatibility and migration
 
-## Major UI refresh begins
-- Reworked the app shell with a branded navigation rail, clearer section grouping, updated active states, and a privacy-oriented footer.
-- Added a contextual workspace header showing the current area, a short description, local-workspace status, and dataset count.
-- Made Home adaptive: new workspaces get onboarding and subtle feature discovery; returning users with datasets restored from IndexedDB get a quieter workspace-focused dashboard, saved-work status, quick actions, and recent datasets.
-- Fixed Export & Publish visibility by rendering its dropdown in a viewport-level portal, outside the navbar's clipping/scrolling container, with viewport-aware positioning for desktop and mobile.
-- Introduced a consistent dark visual foundation with larger cards, more generous spacing, responsive navigation, mobile-first layouts, and reduced-motion handling.
+Each version directory is an independent project with its own `package.json` and `package-lock.json`. To use this release, install its dependencies inside its own folder; installing at the repository root does not apply to any version.
 
-## Compatibility and testing
-- Existing feature pages, routes, data workflows, and export controls remain in place.
-- `node_modules` is not bundled. Run `npm install`, `npm test`, and `npm run build` in Acode before using the release.
+Datasets persisted in IndexedDB are keyed to the browser origin. Running a different version folder on a different dev-server port is a different origin, so previously saved work will not appear there. Workspace data is not migrated between versions by the repository.
 
-# JSA v0.3.01 — Dataset Explorer UI
+## Verification status
 
-- Introduced a refreshed Dataset page header, quick Clean data action, and more prominent dataset switcher.
-- Added at-a-glance summary cards for rows, columns, missing cells, and duplicate rows.
-- Added a searchable column schema with clearer data-type controls and more compact Rename/Delete actions.
-- Refined the data preview table, row numbering, page controls, and mobile layouts.
-- Preserved dataset type overrides, column rename/delete behavior, import warnings, quality notices, dataset switching, and deletion.
-- See `PHASE6_MILESTONE21.md` for the release scope. Install dependencies and run the full tests/build locally before using this release.
+| Check | Status |
+| --- | --- |
+| Test suite | **Not executed** in this documentation pass. |
+| Production build | **Not executed** in this documentation pass. |
+| Browser behaviour | **Not verified** — no browser session was driven during documentation. |
+| Coverage | **Not measured.** No coverage figure is claimed. |
 
+"Executed and passed" above means the command was run against this exact folder in the documentation environment and exited successfully. It does not mean every feature was exercised, and it does not constitute a browser or security verification.
 
-# JSA v0.3.2 — Clean Workspace UI
+## Historical provenance
 
-## Clean page redesign
-- Rebuilt the Clean page into a responsive data-preparation workspace with a clear page header, dataset picker, and navigation to Dataset Explorer and Analysis.
-- Added summary cards for imported rows, current rows, pipeline steps, and available transformation operations.
-- Redesigned the step builder with clearer operation selection, improved form spacing, and a visible reminder that the original import remains unchanged.
-- Redesigned the pipeline as an ordered sequence with applied/skipped status, transformation summaries, row-count changes, and touch-friendly reorder/remove controls.
-- Added an intentional empty state to guide first-time cleaning, plus a clearer reset action when steps exist.
-- Preserved existing transformation, preview, apply, reorder, remove, reset-confirmation, and dataset-selection behavior.
+This release note was reconstructed from:
 
-## Verification
-- ZIP structure and required release files checked. Full test/build verification was not run in this packaging environment; run `npm install`, `npm test`, and `npm run build` in Acode.
-- `node_modules` is intentionally excluded. MIT `LICENSE` is included.
+- The git commit that introduced this folder: *might be the final ui update*.
+- The milestone document `PHASE6_MILESTONE10.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE11.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE12.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE13.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE14.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE15.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE16.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE17.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE18.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE2.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE20.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE21.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE22.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE23.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE24.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE3.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE4.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE5.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE6.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE7.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE8.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE9.md` originally shipped in this folder.
+- A direct source diff against the adjacent version folders.
 
+Milestone documents from this folder have been consolidated into `README.md`, `AUDIT.md`, and this file, and then removed from the version directory to reduce documentation clutter. The source tree, tests, and configuration files were not modified.
 
-## v0.3.3 — Workspace UI Refinements
-- Updated the Analysis page to use the compact Dataset Explorer-style workspace header.
-- Added quick access to Clean Data and Charts while retaining the dataset picker.
-- Reworked the Dataset Explorer's no-dataset state into a polished onboarding panel with a clear import/open-data action and copy specific to inspecting data.
-- Replaced the Clean Data page's oversized introductory header with the compact Dataset Explorer header pattern, showing the current dataset name, dataset picker, and quick links to Dataset Explorer and Analysis.
-- Added responsive layout refinements for mobile screens while preserving cleaning and analysis behavior.
+## License
 
-
-## v0.3.4 — Chart Studio UI Refresh
-- Replaced the Charts page's oversized title block with the compact Dataset Explorer-style workspace header and dataset picker.
-- Added at-a-glance cards for the selected chart type, active data source, and saved chart count.
-- Reorganized chart configuration and live preview into clearly labeled panels, with improved spacing and responsive controls.
-- Redesigned the saved-chart library as responsive cards with chart type, description, edit action, and delete control.
-- Added a guided empty state for the saved-chart library.
-- Preserved chart configuration, filters, appearance controls, save/update, save-as-new, plotted-data CSV export, and existing chart rendering behavior.
-
-## Verification
-- ZIP integrity and release structure checked. Full tests/build must be verified in Acode if dependency installation is unavailable in this environment.
-- `node_modules` is intentionally excluded. MIT `LICENSE` is included.
-
-
-# JSA v0.3.5 — Dedicated Chart Builder
-
-- Split chart creation from the Charts library into a dedicated Chart Builder route.
-- Added a clear builder header, dataset switcher, back/cancel navigation, live preview, and save/update/save-as-new actions.
-- Saved charts can be searched, previewed, edited, deleted, and linked to a dashboard from the library.
-- Editing a saved chart opens its saved specification in the builder. Saving returns to the library.
-- Reused the existing chart specification, chart-data builder, renderer, filters, aggregation, browser persistence, and CSV export.
-- Added render tests for the Charts library and dedicated builder route.
-
-## Verification
-- ZIP integrity checked after packaging. Full test/build verification depends on installing dependencies in Acode.
-- `node_modules` is intentionally excluded. MIT `LICENSE` is included.
-
-# JSA v0.3.6 — Insights Workspace UI & Navigation Icon Polish
-
-## Insights workspace
-- Replaced the oversized title-first layout with the compact Data Workspace header used by Dataset Explorer and Clean Data.
-- Added summary cards for new findings, saved findings, dismissed findings, and quality signals.
-- Organized status tabs, finding-type filters, dashboard targeting, and numeric summary settings into clearer responsive controls.
-- Improved the empty state, skipped-check disclosure, and insight card spacing while preserving save, unsave, dismiss, restore, save-as-chart, and add-to-dashboard actions.
-- Kept rule-based insight generation and existing insight/chart/dashboard storage behavior intact.
-
-## Icon consistency
-- Changed the Clean Data page's Analysis shortcut from the chart icon to the Calculator icon used for Analysis in the main navigation, distinguishing analytical tools from Charts.
-
-## Verification
-- `node_modules` is intentionally excluded. Run `npm install`, `npm test`, and `npm run build` locally.
-
-
-## v0.3.7 — Dashboard Workspace UI & Insights Navigation
-- Redesigned the Dashboards library with a compact Data Workspace header, dataset picker, and direct links to Charts and Insights.
-- Added workspace summary cards for saved dashboards, charts, and KPIs.
-- Replaced the plain dashboard list with responsive dashboard cards showing descriptions, component counts, update dates, delete actions, and a clear open action.
-- Added a guided empty state and a dedicated create/import panel while preserving the existing new-dashboard and configuration-import workflows.
-- Refreshed the dashboard editor header and action bar while keeping component editing, filter behavior, validation, save, and static/interactive exports intact.
-- Added an Insights shortcut to the Charts library header and dashboard editor, where users can save findings for use in dashboards.
-- Kept navigation controls responsive on mobile.
-
-## Verification
-- ZIP integrity checked after packaging. Run `npm install`, `npm test`, and `npm run build` in Acode for full verification.
-- `node_modules` is intentionally excluded. MIT `LICENSE` is included.
-
-
-# JSA v0.3.8 — Dashboard Components & Analysis UI Polish
-
-- Refined dashboard element containers, selection states, drag handles, resize affordances, and component action controls.
-- Redesigned the component settings panel with clearer field hierarchy and responsive controls.
-- Improved the dashboard add-element toolbar, KPI/text elements, and empty canvas presentation.
-- Refreshed the Analysis page's profiling and correlation components, Key Metrics, KPI definition, Group and Compare builder, export controls, and saved analyses list.
-- Preserved existing functionality and data structures; this is a UI-focused release.
-- `node_modules` is not bundled. Run `npm install`, `npm test`, and `npm run build` locally.
+MIT. See [LICENSE](LICENSE) in this folder and the repository-root [LICENSE](../../LICENSE).

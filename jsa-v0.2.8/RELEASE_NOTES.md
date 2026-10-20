@@ -1,17 +1,75 @@
-# JSA v0.2.8 — Advanced Data Preparation
+# RELEASE_NOTES.md — JSA v0.2.8
 
-## Added
-- Custom branded alert, confirmation, and prompt dialogs; replaced native browser popups in dataset deletion, column rename/delete, dashboard deletion, and cleaning-pipeline reset flows.
-- Trim whitespace from text columns; whitespace-only values become missing values.
-- Normalize whitespace by trimming and collapsing repeated whitespace.
-- Convert configurable text markers to actual missing values, with case-insensitive matching and surrounding-space tolerance. Text imports now preserve surrounding whitespace so the new cleaning operations can work on original values; recognized missing markers are still detected during import.
-- Mobile-responsive dialog styling, close controls, Escape handling, and clearer confirmation actions.
-- Regression tests for the new data-preparation operations.
+| | |
+| --- | --- |
+| **Version** | `0.2.8` |
+| **Stage** | Phase 6 |
+| **Recorded date** | 2026-10-15 (from the git commit that added this folder) |
+| **Latest in repository** | No |
 
-## Data safety
-- New preparation operations are regular cleaning-pipeline steps.
-- The source import remains unchanged; remove a step or reset the pipeline to undo it.
-- Preview a transformation before adding it to the pipeline.
+[Root README](../../README.md) · [Version history](../../README.md#version-history) · [README](README.md) · [Audit](AUDIT.md)
 
-## Validation status
-- Run `npm test` and `npm run build` after installing dependencies. Do not treat this release note as evidence that the complete suite/build passed in the packaging environment.
+## Release purpose
+
+Custom in-app dialogs plus three new text-preparation steps.
+
+## New features
+
+- `DialogProvider` with branded alert, confirmation, and text-input dialogs replacing native browser prompts.
+- Trim whitespace step.
+- Normalize whitespace step (trim and collapse internal runs).
+- Standardize missing markers step (configurable, case-insensitive).
+
+## Improvements
+
+- The dataset model preserves original text on import so whitespace can be cleaned deliberately.
+
+## Scope relative to the previous release
+
+- Source modules added: `app/DialogProvider.jsx`.
+- Pipeline steps added: `trimWhitespace`, `normalizeWhitespace`, `missingMarkers`.
+- Application code: 4,097 → 4,346 lines (+249).
+
+Compared against [v0.2.7](../jsa-v0.2.7/RELEASE_NOTES.md).
+
+## Breaking changes
+
+None recorded. No source module present in the previous release was removed, and no route was renamed or dropped, as verified by comparing the source trees.
+
+## Compatibility and migration
+
+Each version directory is an independent project with its own `package.json` and `package-lock.json`. To use this release, install its dependencies inside its own folder; installing at the repository root does not apply to any version.
+
+Datasets persisted in IndexedDB are keyed to the browser origin. Running a different version folder on a different dev-server port is a different origin, so previously saved work will not appear there. Workspace data is not migrated between versions by the repository.
+
+## Verification status
+
+| Check | Status |
+| --- | --- |
+| Test suite | **Not executed** in this documentation pass. |
+| Production build | **Not executed** in this documentation pass. |
+| Browser behaviour | **Not verified** — no browser session was driven during documentation. |
+| Coverage | **Not measured.** No coverage figure is claimed. |
+
+"Executed and passed" above means the command was run against this exact folder in the documentation environment and exited successfully. It does not mean every feature was exercised, and it does not constitute a browser or security verification.
+
+## Historical provenance
+
+This release note was reconstructed from:
+
+- The milestone document `PHASE6_MILESTONE10.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE2.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE3.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE4.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE5.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE6.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE7.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE8.md` originally shipped in this folder.
+- The milestone document `PHASE6_MILESTONE9.md` originally shipped in this folder.
+- A direct source diff against the adjacent version folders.
+
+Milestone documents from this folder have been consolidated into `README.md`, `AUDIT.md`, and this file, and then removed from the version directory to reduce documentation clutter. The source tree, tests, and configuration files were not modified.
+
+## License
+
+MIT. See [LICENSE](LICENSE) in this folder and the repository-root [LICENSE](../../LICENSE).
