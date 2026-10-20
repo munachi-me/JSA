@@ -8,6 +8,8 @@ A toolkit for importing datasets, preparing and cleaning data, performing analyt
 
 Unlike a simple charting or spreadsheet application, JSA persists the full transformation pipeline so every cleaning operation is reproducible, and it distinguishes between imported source data and the pipeline result. Its dashboard builder and export functionality make it a self-contained workspace rather than a collection of one-off visualisations. Data never leaves the user's browser; IndexedDB stores datasets and workspace state locally.
 
+### Check it out 🔗[LIVE PREVIEW](https://jsa-pearl.vercel.app/)
+
 ## Project status
 
 The latest release is **v0.5.2** (`jsa-v0.5.2`), verified as the highest version directory in the repository. The project started as a Node.js command-line data-table toolkit (v0.1.0) and has incrementally added a browser-based React UI starting from v0.2.0. Each version folder (`jsa-v0.1.0` through `jsa-v0.5.2`) is an independent project with its own `package.json` and dependencies.
